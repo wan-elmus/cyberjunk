@@ -10,11 +10,8 @@ then
     exit 1
 fi
 
-# Download the HTML page at the provided URL
-wget -q $url
-
-# Extract all the PDF links from the HTML page
-grep -o 'href=".*\.pdf"' index.html | sed 's/href=//g' | sed 's/"//g' > pdf_links.txt
+# Download the HTML page at the provided URL and extract all the PDF links from the HTML page
+wget -qO- $url | grep -o 'href=".*\.pdf"' index.html | sed 's/href=//g' | sed 's/"//g' > pdf_links.txt
 
 # Check if there are any PDF links
 if ! [ -s pdf_links.txt ]

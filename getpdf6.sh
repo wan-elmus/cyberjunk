@@ -6,6 +6,7 @@ while getopts ":z" opt; do
     case ${opt} in
     z)
         zip=true
+        break
         ;;
     \?)
         echo "Invalid flag: -$OPTARG"

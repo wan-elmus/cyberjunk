@@ -76,7 +76,6 @@ else
     fi
 fi
 
-<<<<<<< HEAD
 # :'
 # The script begins by prompting the user to enter a URL.
 

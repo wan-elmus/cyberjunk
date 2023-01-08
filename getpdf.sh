@@ -76,6 +76,7 @@ else
     fi
 fi
 
+<<<<<<< HEAD
 # :'
 # The script begins by prompting the user to enter a URL.
 
@@ -97,3 +98,5 @@ fi
 
 # The script prints a tabulated summary
 # '
+=======
+>>>>>>> bfac1bc5ef9d9ab20fe0b002163983448cc77c4a

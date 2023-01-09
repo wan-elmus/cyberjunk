@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Full name and student number
-# John Doe (12345678)
+
 
 # Check if the user provided a URL
 read -p "Enter a URL: " url

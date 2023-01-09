@@ -9,7 +9,9 @@ This is a form of web - scrapping only that it gets .pdf links and files availab
 For this code to execute, you must have good internet connection and must be  run in VS Code for Linux on an Ubuntu Desktop 18.0.4 LTS/GNU bash v5.0.17 instance or higher and any appropriate installation of wsl distro
 
 # NOTE: 
-The first file without a number preceding .sh executes smoothly and satisfies all the script requiremnts.
+The first file without a number preceding .sh executes smoothly and satisfies all the script requiremnts but for any invalig flag e.g *./getpdf -p instead of ./getpdf -z* , the error comes at the end of code execution.
+
+The fourth file saved *getpdf4.sh* gives an error e.g *Error: invalid flag '-p' provided* if any invalid flag is provided at the start and no execution takes place further. 
 
 The other scripts are a replica but have minor issues that need addressing, they will execute yes but will exit with error codes... "This is a *buffer contigency protocol* for anyone who wishes to practice troubleshooting the script" 
 

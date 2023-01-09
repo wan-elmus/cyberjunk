@@ -3,6 +3,7 @@
 # Full name and student number
 
 
+
 # Check if the user provided a URL
 read -p "Enter a URL: " url
 if [ -z "$url" ]
@@ -76,3 +77,34 @@ else
     fi
 fi
 
+#What this script does:
+:'
+
+**Explanation of what the script does.**
+
+It prompts the user to enter a URL with the read command.
+
+It then checks if the user provided a URL by using the -z option of the [ command. If the URL is empty, the script prints an error message and exits with an exit code of 1.
+
+The wget command is used to download the HTML page at the provided URL.
+
+It then uses the grep and sed commands to extract all the PDF links from the HTML page and save them to a file called pdf_links.txt.
+
+Checks if there are any PDF links in the file by using the [ -s ] test. If the file is empty, the script prints an error message, removes the temporary files (index.html and pdf_links.txt), and exits with an exit code of 2.
+
+creates a unique directory to store the PDF files by using the date and mkdir commands. The name of the directory is based on the current date and time.
+
+Reads each PDF link from the file pdf_links.txt and uses the wget command to download the corresponding PDF file to the directory created in step 6.
+
+Temporary files (index.html and pdf_links.txt) are removed .
+
+Prints the number of PDF files downloaded and the name of the directory.
+
+A tabulated summary of the PDF files, including their names and sizes is printed. The sizes are displayed in bytes, kilobytes, or megabytes, depending on the size of the file.
+
+Checks if the -z option was provided as an argument. If it was, a zip archive with the same name as the directory is created and the PDF files added to it. 
+
+After step 11, it removes the directory that was created in step 6 if the -z option was provided. The rm -r command is used to remove the directory and all its contents.
+
+Checks for any invalid flags, if any were provided, an error message is printed and the script exits with an exit code of 3.
+'

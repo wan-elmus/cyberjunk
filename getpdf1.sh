@@ -59,28 +59,29 @@ for file in $dir_name/*; do
     fi
 done
 
+#Script's explanations and proof that every instruction is met
 
 :'The script begins by prompting the user to enter a URL.
 
-The script checks if the user provided a URL. If no URL was provided, the script displays an error message and exits with an exit code of 1.
+checks if the user provided a URL. If no URL was provided, the script displays an error message and exits with an exit code of 1.
 
-The script downloads the HTML page at the provided URL using the wget command.
+downloads the HTML page at the provided URL using the wget command.
 
-The script extracts all the PDF links from the HTML page using the grep and sed commands, and saves them to a file called pdf_links.txt.
+extracts all the PDF links from the HTML page using the grep and sed commands, and saves them to a file called pdf_links.txt.
 
-The script checks if there are any PDF links in the file. If the file is empty, the script displays a message indicating that no PDF files were found at the provided URL, removes the temporary files index.html and pdf_links.txt, and exits with an exit code of 2.
+checks if there are any PDF links in the file. If the file is empty, the script displays a message indicating that no PDF files were found at the provided URL, removes the temporary files index.html and pdf_links.txt, and exits with an exit code of 2.
 
 The script creates a unique directory to store the PDF files. The directory name is based on the current date and time, and is formatted as pdf_files_YYYYMMDD_HHMMSS.
 
-The script reads each PDF link from the pdf_links.txt file and downloads the corresponding PDF file using the wget command. The PDF files are saved to the directory created in step 6.
+reads each PDF link from the pdf_links.txt file and downloads the corresponding PDF file using the wget command. The PDF files are saved to the directory created in step 6.
 
 The script removes the temporary files index.html and pdf_links.txt.
 
-The script counts the number of PDF files in the directory and prints a message indicating how many PDF files were downloaded and the directory name.
+counts the number of PDF files in the directory and prints a message indicating how many PDF files were downloaded and the directory name.
 
-The script prints a tabulated summary of the PDF files, including their filenames and sizes. The sizes are displayed in bytes, kilobytes, or megabytes as applicable.
+prints a tabulated summary of the PDF files, including their filenames and sizes. The sizes are displayed in bytes, kilobytes, or megabytes as applicable.
 
-The script checks if the -z flag was provided at the command line. If the -z flag was provided, the script creates a zip archive with the same name as the directory and adds the PDF files to the archive. The script then removes the directory and prints a message indicating that the PDF files have been added to a zip archive.
+checks if the -z flag was provided at the command line. If the -z flag was provided, the script creates a zip archive with the same name as the directory and adds the PDF files to the archive. The script then removes the directory and prints a message indicating that the PDF files have been added to a zip archive.
 
 If the -z flag was not provided, the script checks if any invalid flags were provided. If any invalid flags were provided, the script displays an error message and exits with an exit code of 3.
 '

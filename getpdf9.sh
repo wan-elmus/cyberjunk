@@ -87,3 +87,33 @@ else
     # If no flags were provided or an invalid flag was provided, exit with
     exit 0
 fi
+
+
+
+:"wget -q $url 2>/dev/null
+
+grep -o 'href=".*.pdf"' index.html 2>/dev/null | sed 's/href=//g' | sed 's/"//g' > pdf_links.txt
+
+if ! [ -s pdf_links.txt ]
+then
+echo "No PDFs found at this URL - exiting.."
+rm index.html pdf_links.txt 2>/dev/null
+exit 2
+fi
+
+pdf_count=0
+printf "Downloading$spaces"
+
+while read line; do
+wget -P $dir_name -q $line 2>/dev/null
+pdf_count=$((pdf_count+1))
+printf ".$spaces"
+done < pdf_links.txt
+if [ $pdf_count -gt 0 ]
+then
+printf " %d PDF files have been downloaded to %s\n" $pdf_count $dir_name
+fi
+
+rm index.html pdf_links.txt 2>/dev/null
+"
+

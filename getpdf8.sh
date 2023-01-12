@@ -7,7 +7,9 @@ for flag in "$@"
 do
     if [ "$flag" != "-z" ]
     then
-        echo "Error: Invalid flag '$flag' provided."
+        tput setaf 1
+        echo "Invalid option error. Only -z for zip PDFs is valid - exiting.."
+        tput sgr0
         exit 3
     fi
 done
@@ -16,7 +18,9 @@ done
 read -p "Enter a URL: " url
 if [ -z "$url" ]
 then
+    tput setaf 1
     echo "Error: No URL provided."
+    tput sgr0
     exit 1
 fi
 
@@ -29,7 +33,9 @@ grep -o 'href=".*.pdf"' index.html 2>/dev/null | sed 's/href=//g' | sed 's/"//g'
 # Check if there are any PDF links
 if ! [ -s pdf_links.txt ]
 then
+tput setaf 1
 echo "No PDFs found at this URL - exiting.."
+tput sgr0
 rm index.html pdf_links.txt 2>/dev/null
 exit 2
 fi
@@ -82,7 +88,7 @@ then
     zip -r $dir_name.zip $dir_name
     # Remove the directory
     rm -r $dir_name
-    echo "PDF files have been added to a zip archive called $dir_name.zip."
+    echo "PDFs archived to $dir_name.zip in the $dir_name directory."
 else
     # If no flags were provided or an invalid flag was provided, exit with
     exit 0

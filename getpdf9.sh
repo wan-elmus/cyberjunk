@@ -58,7 +58,7 @@ fi
 rm index.html pdf_links.txt
 
 # Provide a tabulated summary of the downloaded PDF files
-echo "Filename                Size"
+echo "Filename                Size(Bytes)"
 
 for file in $dir_name/*; do
     size=$(stat -c %s "$file")
@@ -66,12 +66,12 @@ for file in $dir_name/*; do
     size_in_mb=$(awk "BEGIN {printf \"%.3f\", $size/1024/1024}")
     if [ $size -lt 1024 ]
     then
-        printf "%-23s %5d bytes\n" $(basename "$file") $size | sed 's/  / |/'
+        printf "%-23s %5d bytes\n" $(basename "$file") $size | sed 's/  /   |/'
     elif [ $size -lt 1048576 ]
     then
-        printf "%-23s %5.3f kb\n" $(basename "$file") $size_in_kb | sed 's/  / |/'
+        printf "%-23s %5.3f kb\n" $(basename "$file") $size_in_kb | sed 's/  /   |/'
     else
-        printf "%-23s %5.3f mb\n" $(basename "$file") $size_in_mb | sed 's/  / |/'
+        printf "%-23s %5.3f mb\n" $(basename "$file") $size_in_mb | sed 's/  /   |/'
     fi
 done
 

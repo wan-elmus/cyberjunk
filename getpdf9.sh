@@ -7,7 +7,7 @@ for flag in "$@"
 do
     if [ "$flag" != "-z" ]
     then
-        echo "Error: Invalid flag '$flag' provided."
+        echo "Invalid option error. Only -z for zip PDFs is valid - exiting.."
         exit 3
     fi
 done
@@ -21,17 +21,17 @@ then
 fi
 
 # Download the HTML page at the provided URL
-wget -q $url
+wget -q $url 2>/dev/null
 
 # Extract all the PDF links from the HTML page
-grep -o 'href=".*\.pdf"' index.html | sed 's/href=//g' | sed 's/"//g' > pdf_links.txt
+grep -o 'href=".*.pdf"' index.html 2>/dev/null | sed 's/href=//g' | sed 's/"//g' > pdf_links.txt
 
 # Check if there are any PDF links
 if ! [ -s pdf_links.txt ]
 then
-    echo "No PDFs found at this URL - exiting.."
-    rm index.html pdf_links.txt
-    exit 2
+echo "No PDFs found at this URL - exiting.."
+rm index.html pdf_links.txt 2>/dev/null
+exit 2
 fi
 
 # Create a unique directory to store the PDF files
@@ -45,17 +45,17 @@ pdf_count=0
 printf "Downloading$spaces"
 
 while read line; do
-    wget -P $dir_name -q $line
-    pdf_count=$((pdf_count+1))
-    printf ".$spaces"
+wget -P $dir_name -q $line 2>/dev/null
+pdf_count=$((pdf_count+1))
+printf ".$spaces"
 done < pdf_links.txt
 if [ $pdf_count -gt 0 ]
 then
-    printf " %d PDF files have been downloaded to %s\n" $pdf_count $dir_name
+printf " %d PDF files have been downloaded to %s\n" $pdf_count $dir_name
 fi
 
 # Remove the temporary files
-rm index.html pdf_links.txt
+rm index.html pdf_links.txt 2>/dev/null
 
 # Provide a tabulated summary of the downloaded PDF files
 echo "Filename                Size(Bytes)"
@@ -82,38 +82,8 @@ then
     zip -r $dir_name.zip $dir_name
     # Remove the directory
     rm -r $dir_name
-    echo "PDF files have been added to a zip archive called $dir_name.zip."
+    echo "PDFs archived to $dir_name.zip in the $dir_name directory."
 else
     # If no flags were provided or an invalid flag was provided, exit with
     exit 0
 fi
-
-
-
-:"wget -q $url 2>/dev/null
-
-grep -o 'href=".*.pdf"' index.html 2>/dev/null | sed 's/href=//g' | sed 's/"//g' > pdf_links.txt
-
-if ! [ -s pdf_links.txt ]
-then
-echo "No PDFs found at this URL - exiting.."
-rm index.html pdf_links.txt 2>/dev/null
-exit 2
-fi
-
-pdf_count=0
-printf "Downloading$spaces"
-
-while read line; do
-wget -P $dir_name -q $line 2>/dev/null
-pdf_count=$((pdf_count+1))
-printf ".$spaces"
-done < pdf_links.txt
-if [ $pdf_count -gt 0 ]
-then
-printf " %d PDF files have been downloaded to %s\n" $pdf_count $dir_name
-fi
-
-rm index.html pdf_links.txt 2>/dev/null
-"
-

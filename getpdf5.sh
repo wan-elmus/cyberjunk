@@ -29,30 +29,37 @@ grep -o 'href=".*\.pdf"' index.html | sed 's/href=//g' | sed 's/"//g' > pdf_link
 # Check if there are any PDF links
 if ! [ -s pdf_links.txt ]
 then
-    echo "No PDF files found at the provided URL - exiting.."
+    echo "No PDFs found at this URL - exiting.."
     rm index.html pdf_links.txt
     exit 2
 fi
 
 # Create a unique directory to store the PDF files
-dir_name=$(date +"pdf_files_%Y%m%d_%H%M%S")
+dir_name=$(date +"pdf_files_%Y_%m_%d_%H_%M_%S")
 mkdir $dir_name
+#Set the number of spaces to use
+spaces=" "
 
 # Read each PDF link and download the PDF file
+pdf_count=0
+printf "Downloading$spaces"
+
 while read line; do
     wget -P $dir_name -q $line
+    pdf_count=$((pdf_count+1))
+    printf ".$spaces"
 done < pdf_links.txt
+if [ $pdf_count -gt 0 ]
+then
+    printf " %d PDF files have been downloaded to %s\n" $pdf_count $dir_name
+fi
 
 # Remove the temporary files
 rm index.html pdf_links.txt
 
-# Print the number of PDF files downloaded and the directory name
-pdf_count=$(ls -1 $dir_name | wc -l)
-echo "$pdf_count PDF files have been downloaded to $dir_name."
-
 # Provide a tabulated summary of the downloaded PDF files
 echo "Filename                Size"
-echo "------------------------ -----"
+echo "------------------------ -----" | sed 's/-/|/g'
 for file in $dir_name/*; do
     size=$(stat -c %s "$file")
     size_in_kb=$(awk "BEGIN {printf \"%.3f\", $size/1024}")

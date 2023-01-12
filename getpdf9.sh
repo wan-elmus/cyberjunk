@@ -3,7 +3,7 @@
 # Full name and student number
 
 # Check if any invalid flags were provided
-OPTERR ="Invalid option error. Only -z for zip file is valid - exiting.."
+OPTERR="Invalid option error. Only -z for zip file is valid - exiting.."
 
 if [[ $# -gt 0 ]]; then
     while getopts "z" opt; do

@@ -77,10 +77,8 @@ for file in $dir_name/*; do
     fi
 done
 
-# Check if the -z option was provided
-if [ $# -eq 1 ] && [ "$1" == "-z" ]
-then
-    # Create a zip archive with the same name as the directory
+# Check if the -z option was provided and create a zip archive with the same name as the directory
+if [ "$zipit" = true ]; then
     zip -r $dir_name.zip $dir_name
     # Remove the directory
     rm -r $dir_name

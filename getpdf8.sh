@@ -82,17 +82,6 @@ for file in $dir_name/*; do
 done
 
 # Check if the -z option was provided
-OPTERR="Invalid option error. Only -z for zip file is valid - exiting.."
-zipit=false
-if [[ $# -gt 0 ]]; then
-    while getopts "z" opt; do
-    case $opt in
-        z) zipit=true;;
-        *) echo -e "$OPTERR" && exit 1;;
-    esac
-    done
-fi
-
 if [ "$zipit" = true ]; then
     # Create a zip archive with the same name as the directory
     zip -r $dir_name.zip $dir_name

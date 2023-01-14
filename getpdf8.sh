@@ -18,9 +18,7 @@ fi
 read -p "Enter a URL: " url
 if [ -z "$url" ]
 then
-    tput setaf 1
     echo "Error: No URL provided."
-    tput sgr0
     exit 1
 fi
 
@@ -33,9 +31,7 @@ grep -o 'href=".*.pdf"' index.html 2>/dev/null | sed 's/href=//g' | sed 's/"//g'
 # Check if there are any PDF links
 if ! [ -s pdf_links.txt ]
 then
-tput setaf 1
 echo "No PDFs found at this URL - exiting.."
-tput sgr0
 rm index.html pdf_links.txt 2>/dev/null
 exit 2
 fi
@@ -81,9 +77,8 @@ for file in $dir_name/*; do
     fi
 done
 
-# Check if the -z option was provided
+# Check if the -z option was provided and create a zip archive with the same name as the directory
 if [ "$zipit" = true ]; then
-    # Create a zip archive with the same name as the directory
     zip -r $dir_name.zip $dir_name
     # Remove the directory
     rm -r $dir_name
@@ -92,4 +87,3 @@ else
     # If no flags were provided or an invalid flag was provided, exit with
     exit 0
 fi
-

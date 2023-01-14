@@ -1,40 +1,90 @@
+#!/bin/bash
 
-#Just simple Tests
+# Full name and student number
 
-
-
-OPTERR="Invalid option error. Only -z for zip file is valid - exiting.."
-
-if [[ $# -gt 0 ]]; then
-    while getopts "z" opt; do
-    case $opt in
-        z) zipit=true;;
-        *) echo -e "$OPTERR" && exit 1;;
-        esac
-    done
-fi
-
+# Check if any invalid flags were provided
 for flag in "$@"
 do
     if [ "$flag" != "-z" ]
     then
-        tput setaf 1
-        echo "Invalid option error. Only -z for zip PDFs is valid - exiting.."
-        tput sgr0
+        echo "Error: Invalid flag '$flag' provided."
         exit 3
     fi
 done
 
-....
+# Check if the user provided a URL
+read -p "Enter a URL: " url
+if [ -z "$url" ]
+then
+    echo "Error: No URL provided."
+    exit 1
+fi
+
+# Download the HTML page at the provided URL
+wget -q $url
+
+# Extract all the PDF links from the HTML page
+grep -o 'href=".*\.pdf"' index.html | sed 's/href=//g' | sed 's/"//g' > pdf_links.txt
+
+# Check if there are any PDF links
+if ! [ -s pdf_links.txt ]
+then
+    echo "No PDFs found at this URL - exiting.."
+    rm index.html pdf_links.txt
+    exit 2
+fi
+
+# Create a unique directory to store the PDF files
+dir_name=$(date +"pdf_files_%Y_%m_%d_%H_%M_%S")
+mkdir $dir_name
+#Set the number of spaces to use
+spaces=" "
+
+# Read each PDF link and download the PDF file
+pdf_count=0
+printf "Downloading$spaces"
+
+while read line; do
+    wget -P $dir_name -q $line
+    pdf_count=$((pdf_count+1))
+    printf ".$spaces"
+done < pdf_links.txt
+if [ $pdf_count -gt 0 ]
+then
+    printf " %d PDF files have been downloaded to %s\n" $pdf_count $dir_name
+fi
+
+# Remove the temporary files
+rm index.html pdf_links.txt
+
+# Provide a tabulated summary of the downloaded PDF files
+for file in $dir_name/*; do
+    size=$(stat -c %s "$file")
+    size_in_kb=$(awk "BEGIN {printf \"%.3f\", $size/1024}")
+    size_in_mb=$(awk "BEGIN {printf \"%.3f\", $size/1024/1024}")
+    if [ $size -lt 1024 ]
+    then
+        printf "%-23s" $(basename "$file") 
+        printf "%5d bytes\n" $size | sed 's/$/ |/'
+    elif [ $size -lt 1048576 ]
+    then
+        printf "%-23s" $(basename "$file") 
+        printf "%5.3f kb\n" $size_in_kb | sed 's/$/ |/'
+    else
+        printf "%-23s" $(basename "$file") 
+        printf "%5.3f mb\n" $size_in_mb | sed 's/$/ |/'
+    fi
+done
 
 
-
-if [ "$zipit" = true ]; then
+# Check if the -z option was provided
+if [ $# -eq 1 ] && [ "$1" == "-z" ]
+then
     # Create a zip archive with the same name as the directory
     zip -r $dir_name.zip $dir_name
     # Remove the directory
     rm -r $dir_name
-    echo "PDFs archived to $dir_name.zip in the $dir_name directory."
+    echo "PDF files have been added to a zip archive called $dir_name.zip."
 else
     # If no flags were provided or an invalid flag was provided, exit with
     exit 0

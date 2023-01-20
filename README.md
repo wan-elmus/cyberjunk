@@ -1,6 +1,11 @@
+
+![alt text](cyrepo2.PNG)
+
+
+
 # cyberjunk
 
-Scripts that download all hyperlinked .pdf files they find at a user-provided URL.
+Script(s) that download all hyperlinked .pdf files they find at a user-provided URL.
 
 Student's Full Name and Reg No. was a necessity at the top of the script for the Partial fulfillment of degree in Software Engineering, under scripting languages. 
 
